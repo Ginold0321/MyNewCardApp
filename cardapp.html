@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flip Business Card</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #1d1f33, #060930);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .card-wrapper {
+            width: 420px;
+            height: 250px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform .7s ease-in-out;
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 12px;
+
+            /* ✔ Keeps front & back aligned */
+            top: 0;
+            left: 0;
+
+            /* Elegant border + glow */
+            border: 2px solid rgba(245, 197, 66, 0.6);
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+        }
+
+        /* FRONT */
+        .front {
+            background: linear-gradient(145deg, #060930, #0b0f4a);
+            color: white;
+        }
+
+        .top-section {
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .profile-pic {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background-size: cover;
+            background-position: center;
+            border: 3px solid #f5c542;
+            margin-right: 20px;
+            box-shadow: 0 0 10px rgba(245, 197, 66, 0.4);
+        }
+
+        .info h2 {
+            margin: 0;
+            font-size: 22px;
+            color: #f5c542;
+            text-shadow: 0 0 4px rgba(245, 197, 66, 0.4);
+        }
+
+        .info p {
+            margin: 4px 0;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .details {
+            padding: 15px 20px;
+            font-size: 14px;
+            line-height: 20px;
+        }
+
+        .details div {
+            margin-bottom: 6px;
+            opacity: 0.9;
+        }
+
+        /* BACK */
+        .back {
+            background: linear-gradient(145deg, #060930, #0b0f4a);
+            color: white;
+            transform: rotateY(180deg);
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .brand {
+            font-size: 32px;
+            font-weight: bold;
+            color: #f5c542;
+            text-shadow: 0 0 10px rgba(245, 197, 66, 0.5);
+        }
+
+        .tagline {
+            font-size: 16px;
+            margin-top: 8px;
+            opacity: 0.8;
+            font-style: italic;
+        }
+
+        .back-design {
+            position: absolute;
+            width: 120%;
+            height: 120%;
+            background: radial-gradient(circle, rgba(245, 197, 66, 0.15), transparent 70%);
+            top: -10%;
+            left: -10%;
+            z-index: 0;
+        }
+
+        .back-content {
+            position: relative;
+            z-index: 2;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="card-wrapper" onclick="flipCard()">
+        <div class="card" id="businessCard">
+
+            <!-- FRONT -->
+            <div class="card-face front">
+                <div class="gold-lines"></div>
+
+                <div class="top-section">
+                    <div class="profile-pic" id="profilePic"></div>
+
+                    <div class="info">
+                        <h2 id="name">Name Here</h2>
+                        <p id="position">Your Title Here</p>
+                    </div>
+                </div>
+
+                <div class="details">
+                    <div><i>📘</i><span id="phone"></span></div>
+                    <div><i>📒</i><span id="email"></span></div>
+                    <div><i>📖</i><span id="website"></span></div>
+                </div>
+            </div>
+
+            <!-- BACK -->
+            <div class="card-face back">
+                <div class="brand" id="brand">BRAND HERE</div>
+                <div class="tagline" id="tagline">YOUR TAGLINE HERE</div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        function flipCard() {
+            document.getElementById("businessCard").classList.toggle("flipped");
+        }
+
+        // Load your details
+        document.getElementById("profilePic").style.backgroundImage =
+            "url('https://scontent.fmnl4-7.fna.fbcdn.net/v/t39.30808-6/557498598_1760426578174528_688878195505046498_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeF4hxGovF46VtgNo8fds-h_BRTDaDEyer0FFMNoMTJ6vcX5IYnK2BvYNEvoo7vZHAGN_9c26oRmgX_M2UdR8yum&_nc_ohc=xD6Om9y5b88Q7kNvwHK-TtF&_nc_oc=AdkFrrGy4qctaWyBJZ2U42YoiTHLANf2aXm8ntJHdBsbn1zXbk53up92CtkbItYwU3iA_126OCYYwCCZ1wg_RgDQ&_nc_zt=23&_nc_ht=scontent.fmnl4-7.fna&_nc_gid=g1XR54W05hUCbdHSyDjGPg&oh=00_Afg_q8SoMWIK5TYPh9ru6p1B_5ODUxmhALFDH8aZcWMPag&oe=6932E994')";
+
+        document.getElementById("name").textContent = "Ginold Christoper Veloso";
+        document.getElementById("position").textContent = "4th Year - BSIT Student";
+
+        document.getElementById("phone").textContent = "Section: SM - 4101";
+        document.getElementById("email").textContent = "Subject: Platform Technology";
+        document.getElementById("website").textContent = "Bible Verse: \"God is with you in everything you do.\" - Genesis 21:22";
+
+        document.getElementById("brand").textContent = "Batangas State University";
+        document.getElementById("tagline").textContent = "JPLPC - Malvar Campus";
+    </script>
+
+</body>
+
+</html>
